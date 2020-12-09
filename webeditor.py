@@ -13,8 +13,9 @@ class WebEditorServer(object):
     """
     Webserver for gpt-2 completion.
     """
-    def __init__(self, runname):
+    def __init__(self, runname, modelname):
         self.runname = runname
+        self.modelname = modelname
         
         # initialize session
         print("Preparing GPT-2...")
@@ -145,6 +146,7 @@ class WebEditorServer(object):
         
         gpt2results = gpt2.generate(
             self.session,
+            model_name=self.modelname,
             run_name=self.runname,
             prefix=prefix,
             return_as_list=True,
@@ -173,10 +175,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--port", action="store", type=int, help="port to serve on", default=8080)
     parser.add_argument("-i", "--interface", action="store", help="interface to serve on", default="0.0.0.0")
+    parser.add_argument("--model", action="store", default="124M", help="model to use")
     parser.add_argument("--run-name", action="store", dest="runname", default="run1", help="run name of the finetuned model.")
     ns =  parser.parse_args()
     
-    server = WebEditorServer(ns.runname)
+    server = WebEditorServer(ns.runname, ns.model)
     server.run(host=ns.interface, port=ns.port)
 
 if __name__ == "__main__":
