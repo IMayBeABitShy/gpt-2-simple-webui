@@ -20,7 +20,7 @@ class WebEditorServer(object):
         # initialize session
         print("Preparing GPT-2...")
         self.session = gpt2.start_tf_sess()
-        gpt2.load_gpt2(self.session, model_name=self.modelname)
+        gpt2.load_gpt2(self.session, run_name=self.runname)
         print("Done.")
         
         # create server
